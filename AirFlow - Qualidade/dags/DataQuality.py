@@ -17,10 +17,7 @@ CSV_PATH = '/opt/airflow/data/data_quality_dataset.csv'
 PARQUET_PATH = '/opt/airflow/data/data_quality_dataset.parquet'
 TEMP_CSV_PATH = '/tmp/temp_data_quality.csv'
 
-
-# -----------------------------
 # Helpers
-# -----------------------------
 
 def get_hook():
     return PostgresHook(postgres_conn_id=CONN_ID)
@@ -42,10 +39,7 @@ def log_result(check_name, status, message=""):
 
     conn.commit()
 
-
-# -----------------------------
 # Create tables
-# -----------------------------
 
 def create_tables(**context):
     hook = get_hook()
@@ -77,10 +71,7 @@ def create_tables(**context):
 
     conn.commit()
 
-
-# -----------------------------
 # Load data
-# -----------------------------
 
 def load_data(**context):
     hook = get_hook()
@@ -111,10 +102,7 @@ def load_data(**context):
     except Exception as e:
         log_result("load_data", "FAIL", str(e))
 
-
-# -----------------------------
 # Checks padronizados
-# -----------------------------
 
 def check_completeness(**context):
     check_name = 'completeness'
@@ -197,7 +185,6 @@ def check_freshness(**context):
             log_result(check_name, 'FAIL', "tabela sem dados")
             return
 
-        # 🔥 CORREÇÃO TIMEZONE
         from datetime import datetime
         delta = datetime.now() - result
 
